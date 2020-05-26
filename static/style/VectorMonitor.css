@@ -1,0 +1,5 @@
+.vectorMonitor {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: 1fr 1fr 1fr;
+    }

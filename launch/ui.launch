@@ -1,0 +1,6 @@
+<launch>
+
+    <node name="rosbridge_server" pkg="rosbridge_server" type="rosbridge_websocket" />
+    <node name="ui_server" pkg="mavros_web_components" type="ui_server" />
+
+</launch>

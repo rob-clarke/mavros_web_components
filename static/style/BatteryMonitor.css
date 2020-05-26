@@ -1,0 +1,7 @@
+.batteryMonitor.critical span:last-of-type {
+    color: red;
+    }
+
+.batteryMonitor.warning span:last-of-type {
+    color: yellow;
+    }

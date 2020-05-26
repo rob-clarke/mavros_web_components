@@ -1,0 +1,14 @@
+.flightStatusMonitor {
+    font-family: sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 3fr;
+    }
+
+.flightStatusMonitor .flightModeMonitor {
+    grid-column: 1 / span 2;
+    }
+
+.flightStatusMonitor .batteryMonitor {
+    grid-column: 1 / span 2;
+    }

@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+
+# Adapted from http://louistiao.me/posts/python-simplehttpserver-recipe-serve-specific-directory/
+
+import os
+import posixpath
+import urllib
+
+import SimpleHTTPServer
+import SocketServer
+
+import rospy
+import rospkg
+
+PORT = 8080
+
+rospy.init_node("ui_server")
+
+rp = rospkg.RosPack()
+try:
+	ui_root = rp.get_path("prometheus_ui")
+except RescourceNotFound:
+	rospy.logfatal("Could not find path to prometheus_ui")
+	exit(1)
+
+class RelocatableHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+
+	def __init__(self, *args, **kwargs):
+		SimpleHTTPServer.SimpleHTTPRequestHandler.__init__(self, *args, **kwargs)
+
+	def translate_path(self,path):
+		path = posixpath.normpath(urllib.unquote(path))
+		words = path.split('/')
+		words = filter(None, words)
+		path = os.path.join(ui_root, 'static')
+		for word in words:
+			drive, word = os.path.splitdrive(word)
+			head, word = os.path.split(word)
+			if word in (os.curdir, os.pardir):
+				continue
+			path = os.path.join(path, word)
+		return path
+
+Handler = RelocatableHandler
+
+Handler.extensions_map={
+	'.manifest': 'text/cache-manifest',
+	'.html': 'text/html',
+	'.png': 'image/png',
+	'.jpg': 'image/jpg',
+	'.svg':	'image/svg+xml',
+	'.css':	'text/css',
+	'.js':	'application/x-javascript',
+	'': 'application/octet-stream', # Default
+	}
+
+httpd = SocketServer.TCPServer(("", PORT), Handler)
+httpd.timeout = 1
+
+print("serving at port", PORT)
+
+while not rospy.is_shutdown():
+   httpd.handle_request()
+
+httpd.server_close()

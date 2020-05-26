@@ -1,0 +1,4 @@
+node_modules
+static/js
+static/web_modules/**
+!static/web_modules/roslib.js

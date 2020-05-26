@@ -1,0 +1,9 @@
+{
+  "presets": ["@babel/preset-react"],
+  "plugins": [
+    ["babel-plugin-jsx-pragmatic", {
+      "module": "/web_modules/react.js",
+      "import": "React"
+      }]
+    ]
+  }
