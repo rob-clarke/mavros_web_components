@@ -1,7 +1,7 @@
 import React from "/web_modules/react.js";
 import ROSLIB from '/web_modules/roslib.js';
 
-const defaultURL = "ws://localhost:9090";
+const defaultURL = "ws://"+window.location.hostname+":9090";
 
 const rosContext = new ROSLIB.Ros({ws: defaultURL});
 rosContext.connect(defaultURL);
