@@ -9,6 +9,9 @@ export default class DockMonitor extends ROS.Component {
             latchString: "Unknown",
             magnetString: "Unknown"
             };
+        
+        this.handleLatchControl = this.handleLatchControl.bind(this);
+        this.handleMagnetControl = this.handleMagnetControl.bind(this);
         }
     
     componentDidMount() {
@@ -26,6 +29,12 @@ export default class DockMonitor extends ROS.Component {
                 messageType : "prometheus_flight_msgs/DockStatus"
                 });
             state.statusTopic.subscribe( (msg) => this.handleStatus(msg) );
+
+            state.controlTopic = new ROS.Lib.Topic({
+                ros: this.ros,
+                name : "/dock/control",
+                messageType : "prometheus_flight_msgs/DockControl"
+                });
 
             return state;
             });
@@ -46,6 +55,51 @@ export default class DockMonitor extends ROS.Component {
             state.status.magnetString = msg.magnet ? "Locked" : "Released";
             return state;
             });
+        }
+    
+    _sendControl(forLatch,doLock) {
+        const LOCK = 1;
+        const RELEASE = 2;
+        const MAGNET = 4;
+        const LATCH = 5;
+        
+        var currentTime = new Date();
+        var secs = Math.floor(currentTime.getTime()/1000);
+        var nsecs = Math.round(1000000000*(currentTime.getTime()/1000-secs));
+
+        let controlMsg = new ROS.Lib.Message({
+            header: {
+                stamp: {
+                    secs,
+                    nsecs
+                    },
+                frame_id: "dock"
+                },
+            component: (forLatch ? LATCH : MAGNET),
+            command: (doLock ? LOCK : RELEASE)
+            });
+        
+        this.state.controlTopic.publish(controlMsg);
+        }
+
+    handleLatchControl(e) {
+        e.preventDefault();
+        if(this.state.status.latchString == "Locked") {
+            this._sendControl(true,false);
+            }
+        else {
+            this._sendControl(true,true);
+            }
+        }
+    
+    handleMagnetControl(e) {
+        e.preventDefault();
+        if(this.state.status.magnetString == "Locked") {
+            this._sendControl(false,false);
+            }
+        else {
+            this._sendControl(false,true);
+            }
         }
 
     render() {
@@ -84,8 +138,8 @@ export default class DockMonitor extends ROS.Component {
                     </g>
                 </svg>
 
-                <span>Latch:</span><span>{this.state.status.latchString}</span>
-                <span>Magnet:</span><span>{this.state.status.magnetString}</span>
+                <span>Latch:</span><button onClick={this.handleLatchControl}>{this.state.status.latchString}</button>
+                <span>Magnet:</span><button onClick={this.handleMagnetControl}>{this.state.status.magnetString}</button>
             </div>
             );
         }
