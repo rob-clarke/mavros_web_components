@@ -6,10 +6,23 @@
         <link rel="stylesheet" href="style/FlightModeMonitor.css" />
         <link rel="stylesheet" href="style/FlightStatusMonitor.css" />
         <link rel="stylesheet" href="style/BatteryMonitor.css" />
+        <link rel="stylesheet" href="style/FlightUnitMonitor.css" />
     </head>
-    <body>
-        <div style="width:350px" id="flightMonCont"></div>
+    <body style="display: flex; flex-wrap: wrap;">
+        <div>
+            <div style="width:350px" id="flightMonCont"></div>
 
+            <div>
+                <div style="width:350px" id="launchUnitMonCont"></div>
+                <div style="width:350px" id="trajectoryUnitMonCont"></div>
+                <div style="width:350px" id="recoveryUnitMonCont"></div>
+            </div>
+
+            <div style="width:350px">
+                <span>Planning Monitor</span><span id="planningMonCont"></span>
+            </div>
+        </div>
+        
         <div style="width:350px" id="dockMonitorContainer"></div>
 
         <div style="width:350px" id="foldInterfaceContainer"></div>
@@ -19,14 +32,22 @@
             import ReactDOM from "/web_modules/react-dom.js";
             
             import FlightStatusMonitor from "./js/FlightStatusMonitor.js";
+            import FlightUnitMonitor from "./js/FlightUnitMonitor.js";
             import DockMonitor from "./js/DockMonitor.js";
             import FoldInterface from "./js/FoldInterface.js";
+            import StringTopic from "./js/StringTopic.js";
 
             ReactDOM.render(React.createElement(FlightStatusMonitor),document.getElementById("flightMonCont"));
 
             ReactDOM.render(React.createElement(DockMonitor),document.getElementById("dockMonitorContainer"));
 
             ReactDOM.render(React.createElement(FoldInterface),document.getElementById("foldInterfaceContainer"));
+
+            ReactDOM.render(React.createElement(FlightUnitMonitor,{unitName:"launch_manager"}),document.getElementById("launchUnitMonCont"));
+            ReactDOM.render(React.createElement(FlightUnitMonitor,{unitName:"trajectory_manager"}),document.getElementById("trajectoryUnitMonCont"));
+            ReactDOM.render(React.createElement(FlightUnitMonitor,{unitName:"recovery_manager"}),document.getElementById("recoveryUnitMonCont"));
+
+            ReactDOM.render(React.createElement(StringTopic,{topic:"/monitor_planning"}),document.getElementById("planningMonCont"));
             
         </script>
     </body>

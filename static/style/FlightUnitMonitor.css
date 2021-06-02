@@ -1,0 +1,31 @@
+.flightUnitMonitor {
+    font-family: sans-serif;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 60% 40%;
+    }
+
+.flightUnitMonitor .unitName {
+    grid-column: 1 / span 2;
+    }
+
+.flightUnitMonitor button.active {
+    background-color: green;
+    color: white;
+    }
+
+.flightUnitMonitor button.inactive {
+    background-color: green;
+    color: white;
+    }
+
+.flightUnitMonitor button.inactive.warning {
+    background-color: yellow;
+    color: black;
+    }
+
+.flightUnitMonitor button.inactive.error {
+    background-color: red;
+    color: white;
+    }
