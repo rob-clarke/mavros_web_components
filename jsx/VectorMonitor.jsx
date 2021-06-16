@@ -17,6 +17,9 @@ export default class VectorMonitor extends ROS.Component {
         this.addSubscriber(this.props.topic, this.props.type, (msg) => {
             this.setState( (state) => {
                 state.vector = this.props.extractor(msg);
+		state.vector.x = state.vector.x || NaN;
+		state.vector.y = state.vector.y || NaN;
+		state.vector.z = state.vector.z || NaN;
                 return state;
                 });
             });
