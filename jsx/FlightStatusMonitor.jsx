@@ -17,7 +17,7 @@ export default class FlightStatusMonitor extends ROS.Component {
                 </div>
                 <div>
                     <span>Setpoint</span>
-                    <VectorMonitor topic="/mavros/setpoint_raw/local" type="mavros_msgs/PositionTarget" timeout="0.5" />
+                    <VectorMonitor topic="/mavros/setpoint_raw/target_local" type="mavros_msgs/PositionTarget" timeout="0.5" />
                 </div>
             </div>
             );
