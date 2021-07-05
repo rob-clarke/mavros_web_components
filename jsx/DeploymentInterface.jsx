@@ -19,7 +19,7 @@ export default class DeploymentInterface extends ROS.Component {
             
             state.wallPressTopic = new ROS.Lib.Topic({
                 ros: this.ros,
-                name : "/dock/wall_press",
+                name : "/dock/wall_press_command",
                 messageType : "std_msgs/Bool"
                 });
             
@@ -51,7 +51,7 @@ export default class DeploymentInterface extends ROS.Component {
         let tagMsg = new ROS.Lib.Message({
             data: shouldDeploy
             });        
-        this.state.wallPressTopic.publish(tagMsg);
+        this.state.tagTopic.publish(tagMsg);
         }
         
     render() {
@@ -73,18 +73,18 @@ export default class DeploymentInterface extends ROS.Component {
                 <table>
                     <tr>
                         <td>Joint:</td>
-                        <td><button onClick={() => _alignJoint(true)}>Align</button></td>
-                        <td><button onClick={() => _alignJoint(false)}>Home</button></td>
+                        <td><button onClick={() => this._alignJoint(true)}>Align</button></td>
+                        <td><button onClick={() => this._alignJoint(false)}>Home</button></td>
                     </tr>
                     <tr>
                         <td>Wall Pressing:</td>
-                        <td><button onClick={() => _wallPress(true)}>Press</button></td>
-                        <td><button onClick={() => _wallPress(false)}>Release</button></td>
+                        <td><button onClick={() => this._wallPress(true)}>Press</button></td>
+                        <td><button onClick={() => this._wallPress(false)}>Release</button></td>
                     </tr>
                     <tr>
                         <td>Tags:</td>
-                        <td><button onClick={() => _deployTags(true)}>Deploy</button></td>
-                        <td><button onClick={() => _deployTags(false)}>Retract</button></td>
+                        <td><button onClick={() => this._deployTags(true)}>Deploy</button></td>
+                        <td><button onClick={() => this._deployTags(false)}>Retract</button></td>
                     </tr>
                 </table>
             </div>
